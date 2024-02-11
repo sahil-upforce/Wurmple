@@ -1,0 +1,11 @@
+target-version = "py39"
+
+[tool.black]
+target-version = ["py39"]
+line-length = 120
+include = '^/.*\.py$'
+
+[tool.ruff]
+# Enable Pyflakes `E` and `F` codes by default.
+select = ["E", "F"]
+ignore = ["E501", "E741", "F403"]
