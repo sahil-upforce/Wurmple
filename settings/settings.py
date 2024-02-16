@@ -1,3 +1,5 @@
+import os
+
 from settings import ENV_VARIABLES
 
 SECRET_KEY = ENV_VARIABLES.get("SECRET_KEY", "is-not-used")
@@ -15,8 +17,10 @@ INSTALLED_APPS = [
     "django_celery_results",
     "django_extensions",
     "rest_framework",
+    "phone_field",
     # Project APPs
     "core",
+    "user_app",
 ]
 
 MIDDLEWARE = [
@@ -51,15 +55,22 @@ ROOT_URLCONF = "Wurmple.urls"
 
 WSGI_APPLICATION = "Wurmple.wsgi.application"
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": ENV_VARIABLES["DB_NAME"],
+#         "USER": ENV_VARIABLES["DB_USER"],
+#         "PASSWORD": ENV_VARIABLES["DB_PASSWORD"],
+#         "HOST": ENV_VARIABLES["DB_HOST"],
+#         "PORT": ENV_VARIABLES["DB_PORT"],
+#     },
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": ENV_VARIABLES["DB_NAME"],
-        "USER": ENV_VARIABLES["DB_USER"],
-        "PASSWORD": ENV_VARIABLES["DB_PASSWORD"],
-        "HOST": ENV_VARIABLES["DB_HOST"],
-        "PORT": ENV_VARIABLES["DB_PORT"],
-    },
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join("db.sqlite3"),
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -80,6 +91,8 @@ USE_I18N = True
 USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "user_app.User"
 
 REDIS_HOST = ENV_VARIABLES.get("REDIS_HOST", "localhost")
 REDIS_PORT = ENV_VARIABLES.get("REDIS_PORT", 6379)
