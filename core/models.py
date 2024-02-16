@@ -1,43 +1,60 @@
-import datetime
-import uuid
-
-from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from core.managers import BaseModelManager
-
-User = get_user_model()
+from core.model_mixin import BaseModel, CodeFieldMixin, NameFieldMixin
 
 
-class BaseModel(models.Model):
-    public_id = models.UUIDField(verbose_name=_("public id"), default=uuid.uuid4, primary_key=True)
-    created_at = models.DateTimeField(verbose_name=_("created at"), auto_now_add=True)
-    updated_at = models.DateTimeField(verbose_name=_("updated at"), auto_now=True)
-    deleted_at = models.DateTimeField(verbose_name=_("deleted at"), null=True, blank=True)
-    created_by = models.ForeignKey(
-        verbose_name=_("created by"), to=User, on_delete=models.SET_NULL, null=True, blank=True, related_name="+"
+class Country(BaseModel, NameFieldMixin, CodeFieldMixin):
+    class Meta:
+        verbose_name = _("Country")
+        verbose_name_plural = _("Countries")
+        db_table = "countries"
+
+    def __str__(self):
+        return f"{self.name} - {self.code}"
+
+
+class State(BaseModel, NameFieldMixin, CodeFieldMixin):
+    country = models.ForeignKey(
+        verbose_name=_("country"), to=Country, on_delete=models.DO_NOTHING, related_name="states"
     )
-    updated_by = models.ForeignKey(
-        verbose_name=_("updated by"), to=User, on_delete=models.SET_NULL, null=True, blank=True, related_name="+"
-    )
-    deleted_by = models.ForeignKey(
-        verbose_name=_("deleted by"), to=User, on_delete=models.SET_NULL, null=True, blank=True, related_name="+"
-    )
-
-    objects = BaseModelManager()
-    all_objects = BaseModelManager(alive_only=False)
 
     class Meta:
-        abstract = True
+        verbose_name = _("State")
+        verbose_name_plural = _("States")
+        db_table = "states"
 
-    def delete(self, using=None, keep_parents=False):
-        self.deleted_at = datetime.datetime.now()
-        self.save()
+    def __str__(self):
+        return f"{self.name} - {self.code}"
 
-    def hard_delete(self):
-        return super().delete()
 
-    @property
-    def is_new(self):
-        return self._state.adding
+class City(BaseModel, NameFieldMixin, CodeFieldMixin):
+    state = models.ForeignKey(verbose_name=_("state"), to=State, on_delete=models.DO_NOTHING, related_name="cities")
+
+    class Meta:
+        verbose_name = _("City")
+        verbose_name_plural = _("Cities")
+        db_table = "cities"
+
+    def __str__(self):
+        return f"{self.name} - {self.code}"
+
+
+class Language(BaseModel, NameFieldMixin, CodeFieldMixin):
+    class Meta:
+        verbose_name = _("Language")
+        verbose_name_plural = _("Languages")
+        db_table = "languages"
+
+    def __str__(self):
+        return f"{self.name} - {self.code}"
+
+
+class Category(BaseModel, NameFieldMixin, CodeFieldMixin):
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+        db_table = "categories"
+
+    def __str__(self):
+        return f"{self.name} - {self.code}"
