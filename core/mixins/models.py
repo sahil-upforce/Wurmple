@@ -61,9 +61,17 @@ class NameFieldMixin(models.Model):
     class Meta:
         abstract = True
 
+    def save(self, *args, **kwargs):
+        self.name = self.name.title()
+        super().save(*args, **kwargs)
+
 
 class CodeFieldMixin(models.Model):
-    code = models.CharField(verbose_name=_("code"), unique=True, max_length=15, db_index=True)
+    code = models.CharField(verbose_name=_("code"), max_length=15, db_index=True)
 
     class Meta:
         abstract = True
+
+    def save(self, *args, **kwargs):
+        self.code = self.code.upper()
+        super().save(*args, **kwargs)

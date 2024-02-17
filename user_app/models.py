@@ -3,11 +3,11 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from phone_field import PhoneField
 
-from core.model_mixin import BaseModel, NameFieldMixin
+from core.mixins.models import BaseModel, CodeFieldMixin, NameFieldMixin
 from core.models import Category, Language
 
 
-class Gender(BaseModel, NameFieldMixin):
+class Gender(BaseModel, NameFieldMixin, CodeFieldMixin):
     class Meta:
         verbose_name = "gender"
         verbose_name_plural = "genders"
