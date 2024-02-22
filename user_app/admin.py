@@ -2,14 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 
 from core.admin import BaseAdmin
-from user_app.models import (
-    Gender,
-    Guide,
-    GuideReview,
-    SpokenLanguage,
-    TourCategory,
-    Tourist,
-)
+from user_app.models import Gender, GuideReview, SpokenLanguage, TourCategory
 
 User = get_user_model()
 
@@ -29,18 +22,8 @@ class TourCategoryAdmin(BaseAdmin):
     pass
 
 
-@admin.register(Tourist)
-class TouristAdmin(BaseAdmin):
-    pass
-
-
 @admin.register(GuideReview)
 class GuideReviewAdmin(BaseAdmin):
-    pass
-
-
-@admin.register(Guide)
-class GuideAdmin(BaseAdmin):
     pass
 
 
