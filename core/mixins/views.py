@@ -12,3 +12,11 @@ class CustomModelViewSet(ModelViewSet):
         self.perform_destroy(instance)
         message = self.get_message(instance)
         return Response({"detail": message}, status=status.HTTP_200_OK)
+
+
+class CustomUserModelViewSet(CustomModelViewSet):
+    def get_message(self, instance):
+        return f"{instance.username} has been deleted successfully."
+
+    def perform_destroy(self, instance):
+        instance.make_inactive_user()

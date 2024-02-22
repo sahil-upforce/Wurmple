@@ -1,6 +1,7 @@
 import datetime
 import uuid
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -43,7 +44,19 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+    def delete_related_objects(self):
+        related_objects = self._meta.related_objects
+        for related_object in related_objects:
+            related_manager = getattr(self, related_object.get_accessor_name(), None)
+            if related_manager and hasattr(related_manager, "all"):
+                for related_obj in related_manager.all():
+                    try:
+                        related_obj.delete()
+                    except ObjectDoesNotExist:
+                        continue
+
     def delete(self, using=None, keep_parents=False):
+        self.delete_related_objects()
         self.deleted_at = datetime.datetime.now()
         self.save()
 
