@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from settings import ENV_VARIABLES
 
@@ -17,6 +18,7 @@ INSTALLED_APPS = [
     "django_celery_results",
     "django_extensions",
     "rest_framework",
+    "rest_framework_simplejwt",
     "phone_field",
     # Project APPs
     "core",
@@ -93,6 +95,20 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "user_app.User"
+
+AUTHENTICATION_BACKENDS = ["user_app.backends.UserAndEmailBackend"]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "USER_ID_FIELD": "public_id",
+}
 
 REDIS_HOST = ENV_VARIABLES.get("REDIS_HOST", "localhost")
 REDIS_PORT = ENV_VARIABLES.get("REDIS_PORT", 6379)
