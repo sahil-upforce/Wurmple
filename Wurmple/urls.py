@@ -16,11 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from core.urls import core_router as core
-from user_app.urls import user_router as user
-
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("core/", include(core.urls)),
-    path("users/", include(user.urls)),
+    path("core/", include("core.urls")),
+    path("users/", include("user_app.urls")),
 ]

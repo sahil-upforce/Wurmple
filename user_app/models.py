@@ -5,9 +5,9 @@ from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from phone_field import PhoneField
 
-from core.managers import BaseModelManager
 from core.mixins.models import BaseModel, CodeFieldMixin, NameFieldMixin
 from core.models import Category, Language
+from user_app.managers import CustomUserManager
 
 
 class Gender(BaseModel, NameFieldMixin, CodeFieldMixin):
@@ -111,8 +111,8 @@ class User(AbstractUser, BaseModel):
     is_available = models.BooleanField(verbose_name=_("is available"), default=True)
     experience = models.PositiveSmallIntegerField(verbose_name=_("experience"), default=0, blank=False)
 
-    objects = BaseModelManager()
-    all_objects = BaseModelManager(alive_only=False)
+    objects = CustomUserManager()
+    all_objects = CustomUserManager(alive_only=False)
 
     class Meta:
         verbose_name = "User"

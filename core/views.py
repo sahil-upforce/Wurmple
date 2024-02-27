@@ -1,14 +1,17 @@
 from core import serializers
 from core.mixins.views import CustomModelViewSet
 from core.models import Category, City, Country, Language, State
+from core.permissions import IsSuperUser
 
 
 class CountryModelViewSet(CustomModelViewSet):
+    permission_classes = (IsSuperUser,)
     serializer_class = serializers.CountrySerializer
     queryset = Country.objects.all()
 
 
 class StateModelViewSet(CustomModelViewSet):
+    permission_classes = (IsSuperUser,)
     serializer_class = serializers.StateSerializer
     queryset = State.objects.all()
 
@@ -19,6 +22,7 @@ class StateModelViewSet(CustomModelViewSet):
 
 
 class CityModelViewSet(CustomModelViewSet):
+    permission_classes = (IsSuperUser,)
     serializer_class = serializers.CitySerializer
     queryset = City.objects.all()
 
@@ -29,10 +33,12 @@ class CityModelViewSet(CustomModelViewSet):
 
 
 class LanguageModelViewSet(CustomModelViewSet):
+    permission_classes = (IsSuperUser,)
     serializer_class = serializers.LanguageSerializer
     queryset = Language.objects.all()
 
 
 class CategoryModelViewSet(CustomModelViewSet):
+    permission_classes = (IsSuperUser,)
     serializer_class = serializers.CategorySerializer
     queryset = Category.objects.all()
