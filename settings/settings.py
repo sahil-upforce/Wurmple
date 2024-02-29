@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     # Project APPs
     "core",
     "user_app",
+    "tour_management",
 ]
 
 MIDDLEWARE = [
@@ -99,6 +100,7 @@ AUTH_USER_MODEL = "user_app.User"
 AUTHENTICATION_BACKENDS = ["user_app.backends.UserAndEmailBackend"]
 
 REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
