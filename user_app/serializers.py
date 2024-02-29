@@ -42,7 +42,7 @@ class TourCategorySerializer(BaseSerializer):
 
 class UserSerializer(BaseSerializer, serializers.ModelSerializer):
     gender = GenderSerializer(read_only=True)
-    tour_categories = TourCategorySerializer(many=True, source="categories")
+    tour_categories = TourCategorySerializer(many=True, source="categories_of_tour")
     spoken_languages = SpokenLanguageSerializer(many=True, source="languages")
     user_type_name = serializers.SerializerMethodField()
 

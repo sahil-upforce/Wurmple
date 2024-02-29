@@ -50,9 +50,11 @@ class SpokenLanguage(BaseModel):
 
 
 class TourCategory(BaseModel):
-    user = models.ForeignKey(verbose_name=_("user"), to="User", on_delete=models.DO_NOTHING, related_name="categories")
+    user = models.ForeignKey(
+        verbose_name=_("user"), to="User", on_delete=models.DO_NOTHING, related_name="categories_of_tour"
+    )
     category = models.ForeignKey(
-        verbose_name=_("category"), to=Category, on_delete=models.DO_NOTHING, related_name="categories"
+        verbose_name=_("category"), to=Category, on_delete=models.DO_NOTHING, related_name="categories_of_tour"
     )
 
     class Meta:
@@ -133,6 +135,14 @@ class User(AbstractUser, BaseModel):
     def make_inactive_user(self):
         self.active = False
         self.delete()
+
+    @property
+    def is_tourist(self):
+        return self.user_type == self.USER_TYPE_TOURIST
+
+    @property
+    def is_guide(self):
+        return self.user_type == self.USER_TYPE_GUIDE
 
 
 class GuideReview(BaseModel):

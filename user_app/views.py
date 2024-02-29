@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import mixins, viewsets
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from core.mixins.views import CustomModelViewSet
 from core.permissions import IsObjectOwnerOrSuperUser, IsSuperUser
@@ -11,7 +11,7 @@ User = get_user_model()
 
 
 class GenderModelViewSet(CustomModelViewSet):
-    permission_classes = (IsSuperUser,)
+    permission_classes = (IsAuthenticated, IsSuperUser)
     serializer_class = serializers.GenderSerializer
     queryset = Gender.objects.all()
 
@@ -26,7 +26,7 @@ class UserModelViewSet(
         if self.action == "create":
             permission_classes = (AllowAny,)
         else:
-            permission_classes = (IsObjectOwnerOrSuperUser,)
+            permission_classes = (IsAuthenticated, IsObjectOwnerOrSuperUser)
         return [permission() for permission in permission_classes]
 
     def get_serializer_class(self):

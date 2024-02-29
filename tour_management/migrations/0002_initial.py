@@ -9,13 +9,14 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ("core", "0001_initial"),
+        ("tour_management", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ("core", "0002_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name="state",
+            model_name="placeimage",
             name="created_by",
             field=models.ForeignKey(
                 blank=True,
@@ -27,7 +28,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="state",
+            model_name="placeimage",
             name="deleted_by",
             field=models.ForeignKey(
                 blank=True,
@@ -39,125 +40,17 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="state",
-            name="updated_by",
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to=settings.AUTH_USER_MODEL,
-                verbose_name="updated by",
-            ),
-        ),
-        migrations.AddField(
-            model_name="language",
-            name="created_by",
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to=settings.AUTH_USER_MODEL,
-                verbose_name="created by",
-            ),
-        ),
-        migrations.AddField(
-            model_name="language",
-            name="deleted_by",
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to=settings.AUTH_USER_MODEL,
-                verbose_name="deleted by",
-            ),
-        ),
-        migrations.AddField(
-            model_name="language",
-            name="updated_by",
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to=settings.AUTH_USER_MODEL,
-                verbose_name="updated by",
-            ),
-        ),
-        migrations.AddField(
-            model_name="country",
-            name="created_by",
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to=settings.AUTH_USER_MODEL,
-                verbose_name="created by",
-            ),
-        ),
-        migrations.AddField(
-            model_name="country",
-            name="deleted_by",
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to=settings.AUTH_USER_MODEL,
-                verbose_name="deleted by",
-            ),
-        ),
-        migrations.AddField(
-            model_name="country",
-            name="updated_by",
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to=settings.AUTH_USER_MODEL,
-                verbose_name="updated by",
-            ),
-        ),
-        migrations.AddField(
-            model_name="city",
-            name="created_by",
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to=settings.AUTH_USER_MODEL,
-                verbose_name="created by",
-            ),
-        ),
-        migrations.AddField(
-            model_name="city",
-            name="deleted_by",
-            field=models.ForeignKey(
-                blank=True,
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                related_name="+",
-                to=settings.AUTH_USER_MODEL,
-                verbose_name="deleted by",
-            ),
-        ),
-        migrations.AddField(
-            model_name="city",
-            name="state",
+            model_name="placeimage",
+            name="place",
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.DO_NOTHING,
-                related_name="cities",
-                to="core.state",
-                verbose_name="state",
+                related_name="images_of_places",
+                to="tour_management.place",
+                verbose_name="place",
             ),
         ),
         migrations.AddField(
-            model_name="city",
+            model_name="placeimage",
             name="updated_by",
             field=models.ForeignKey(
                 blank=True,
@@ -169,7 +62,17 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="category",
+            model_name="placecategory",
+            name="category",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="categories_of_places",
+                to="core.category",
+                verbose_name="category",
+            ),
+        ),
+        migrations.AddField(
+            model_name="placecategory",
             name="created_by",
             field=models.ForeignKey(
                 blank=True,
@@ -181,7 +84,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="category",
+            model_name="placecategory",
             name="deleted_by",
             field=models.ForeignKey(
                 blank=True,
@@ -193,7 +96,73 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="category",
+            model_name="placecategory",
+            name="place",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="categories_of_places",
+                to="tour_management.place",
+                verbose_name="place",
+            ),
+        ),
+        migrations.AddField(
+            model_name="placecategory",
+            name="updated_by",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="updated by",
+            ),
+        ),
+        migrations.AddField(
+            model_name="place",
+            name="city",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name="places",
+                to="core.city",
+                verbose_name="city",
+            ),
+        ),
+        migrations.AddField(
+            model_name="place",
+            name="created_by",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="created by",
+            ),
+        ),
+        migrations.AddField(
+            model_name="place",
+            name="deleted_by",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="deleted by",
+            ),
+        ),
+        migrations.AddField(
+            model_name="place",
+            name="place_categories",
+            field=models.ManyToManyField(
+                related_name="place_categories",
+                through="tour_management.PlaceCategory",
+                to="core.category",
+                verbose_name="place categories",
+            ),
+        ),
+        migrations.AddField(
+            model_name="place",
             name="updated_by",
             field=models.ForeignKey(
                 blank=True,
@@ -205,39 +174,19 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddConstraint(
-            model_name="state",
-            constraint=models.UniqueConstraint(
-                condition=models.Q(("deleted_at__isnull", True)), fields=("code",), name="state_code_unique_constraint"
-            ),
-        ),
-        migrations.AddConstraint(
-            model_name="language",
+            model_name="placecategory",
             constraint=models.UniqueConstraint(
                 condition=models.Q(("deleted_at__isnull", True)),
-                fields=("code",),
-                name="language_code_unique_constraint",
+                fields=("place", "category"),
+                name="place_category_unique_constraint",
             ),
         ),
         migrations.AddConstraint(
-            model_name="country",
+            model_name="place",
             constraint=models.UniqueConstraint(
                 condition=models.Q(("deleted_at__isnull", True)),
-                fields=("code",),
-                name="country_code_unique_constraint",
-            ),
-        ),
-        migrations.AddConstraint(
-            model_name="city",
-            constraint=models.UniqueConstraint(
-                condition=models.Q(("deleted_at__isnull", True)), fields=("code",), name="city_code_unique_constraint"
-            ),
-        ),
-        migrations.AddConstraint(
-            model_name="category",
-            constraint=models.UniqueConstraint(
-                condition=models.Q(("deleted_at__isnull", True)),
-                fields=("code",),
-                name="category_code_unique_constraint",
+                fields=("latitude", "longitude"),
+                name="latitude_longitude_unique_constraint",
             ),
         ),
     ]
