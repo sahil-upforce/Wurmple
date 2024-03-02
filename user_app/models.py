@@ -17,10 +17,9 @@ class Gender(BaseModel, NameFieldMixin, CodeFieldMixin):
         db_table = "genders"
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.code}"
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        self.name = self.name.strip().title()
         super(Gender, self).save(
             force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields
         )
