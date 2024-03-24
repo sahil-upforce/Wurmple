@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
+from django.contrib.gis.geos import Point
 from django.db import transaction
 from rest_framework import serializers
 
@@ -177,3 +178,15 @@ class UpdateUserSerializer(UserSerializer):
         if value == User.USER_TYPE_GUIDE and not self.initial_data.get("experience"):
             raise serializers.ValidationError(f"Experience is required for {User.USER_TYPE_TOURIST_NAME} type user")
         return value
+
+
+class UserLocationSerializer(serializers.Serializer):
+    latitude = serializers.FloatField(required=True, source="current_location.x")
+    longitude = serializers.FloatField(required=True, source="current_location.y")
+
+    def update(self, instance, validated_data):
+        latitude, longitude = validated_data["current_location"]["x"], validated_data["current_location"]["y"]
+        current_location = Point(latitude, longitude, srid=4326)
+        instance.current_location = current_location
+        instance.save()
+        return instance

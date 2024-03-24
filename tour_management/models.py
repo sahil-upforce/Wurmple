@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.gis.db.models import PointField
 from django.db import models
 from django.db.models import Q
 from django.utils.text import slugify
@@ -41,8 +42,7 @@ class Place(BaseModel, NameFieldMixin, CodeFieldMixin):
     description = models.TextField(verbose_name=_("description"), null=True, blank=False)
     visiting_fees = models.DecimalField(verbose_name=_("visiting fees"), max_digits=10, decimal_places=2, default=0.00)
     website = models.URLField(verbose_name=_("website"), blank=True)
-    latitude = models.DecimalField(verbose_name=_("latitude"), max_digits=10, decimal_places=6)
-    longitude = models.DecimalField(verbose_name=_("longitude"), max_digits=10, decimal_places=6)
+    location = PointField()
     place_categories = models.ManyToManyField(
         verbose_name=_("place categories"),
         to=Category,
@@ -57,14 +57,14 @@ class Place(BaseModel, NameFieldMixin, CodeFieldMixin):
         db_table = "places"
         constraints = [
             models.UniqueConstraint(
-                fields=["latitude", "longitude"],
+                fields=["location"],
                 condition=Q(deleted_at__isnull=True),
-                name="latitude_longitude_unique_constraint",
+                name="location_unique_constraint",
             )
         ]
 
     def __str__(self):
-        return f"{self.name} - {self.city.name} --> Latitude: {self.latitude}, Longitude: {self.longitude}"
+        return f"{self.name} - {self.city.name} --> Location: {self.location}"
 
     def save(self, *args, **kwargs):
         if not self.slug:

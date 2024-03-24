@@ -9,6 +9,9 @@ app_name = "user_app"
 user_router = NoSlashRouter()
 user_router.register(r"accounts", views.UserModelViewSet, basename="accounts")
 user_router.register(r"genders", views.GenderModelViewSet, basename="genders")
+user_router.register(
+    r"update-current-location", views.UpdateUserCurrentLocationModelViewSet, basename="update_user_current_location"
+)
 
 urlpatterns = [
     path("", include(user_router.urls)),

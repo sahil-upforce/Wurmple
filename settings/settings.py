@@ -1,4 +1,3 @@
-import os
 from datetime import timedelta
 
 from settings import ENV_VARIABLES
@@ -14,6 +13,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Location
+    "django.contrib.gis",
     # Third Party
     "django_celery_results",
     "django_extensions",
@@ -58,22 +59,15 @@ ROOT_URLCONF = "Wurmple.urls"
 
 WSGI_APPLICATION = "Wurmple.wsgi.application"
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": ENV_VARIABLES["DB_NAME"],
-#         "USER": ENV_VARIABLES["DB_USER"],
-#         "PASSWORD": ENV_VARIABLES["DB_PASSWORD"],
-#         "HOST": ENV_VARIABLES["DB_HOST"],
-#         "PORT": ENV_VARIABLES["DB_PORT"],
-#     },
-# }
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join("db.sqlite3"),
-    }
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "NAME": ENV_VARIABLES["DB_NAME"],
+        "USER": ENV_VARIABLES["DB_USER"],
+        "PASSWORD": ENV_VARIABLES["DB_PASSWORD"],
+        "HOST": ENV_VARIABLES["DB_HOST"],
+        "PORT": ENV_VARIABLES["DB_PORT"],
+    },
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -123,3 +117,6 @@ CELERY_RESULT_SERIALIZER = "json"
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_TIMEZONE = "UTC"
+
+GDAL_LIBRARY_PATH = "/opt/homebrew/Cellar/gdal/3.8.4_2/lib/libgdal.dylib"
+GEOS_LIBRARY_PATH = "/opt/homebrew/Cellar/geos/3.12.1/lib/libgeos_c.dylib"

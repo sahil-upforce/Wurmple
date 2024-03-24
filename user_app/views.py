@@ -35,3 +35,11 @@ class UserModelViewSet(
         elif self.action == "update":
             return serializers.UpdateUserSerializer
         return super().get_serializer_class()
+
+
+class UpdateUserCurrentLocationModelViewSet(
+    viewsets.GenericViewSet, mixins.UpdateModelMixin, mixins.RetrieveModelMixin
+):
+    permission_classes = (IsAuthenticated, IsObjectOwnerOrSuperUser)
+    serializer_class = serializers.UserLocationSerializer
+    queryset = User.objects.all()
