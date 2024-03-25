@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.contrib.gis.db.models import PointField
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
@@ -104,7 +105,7 @@ class User(AbstractUser, BaseModel):
         related_name="tour_categories",
         through_fields=("user", "category"),
     )
-    # current_location = PointField(verbose_name=_("current location"), null=True, blank=True)
+    current_location = PointField(verbose_name=_("current location"), null=True, blank=True)
     address = models.TextField(verbose_name=_("address"), blank=True, null=True)
     bio = models.TextField(verbose_name=_("bio"), blank=True, null=True)
     birth_date = models.DateField(verbose_name=_("birth date"), null=True, blank=False)
@@ -155,7 +156,7 @@ class GuideReview(BaseModel):
     class Meta:
         verbose_name = "Guide Review"
         verbose_name_plural = "Guide Reviews"
-        db_table = "guid_reviews"
+        db_table = "guide_reviews"
 
     def __str__(self):
         return f"{self.guide.username} - {self.context} - {self.rating}"
